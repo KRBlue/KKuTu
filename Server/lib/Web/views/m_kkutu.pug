@@ -14,7 +14,7 @@
 	
 	You should have received a copy of the GNU General Public License
 	along with this program. If not, see <http://www.gnu.org/licenses/>.
-extends m_layout
+extends layout
 
 mixin Dialog(id, w, h, t, nocls)
 	div.dialog(id=id, style=`width: ${w}px; height: ${h}px;`)
@@ -39,16 +39,17 @@ mixin SettingOption(id, text, st)
 
 block Subject
 	title= L('title')
-	
+
 block JS
 	script(type='text/javascript', src='/js/in_game_kkutu.min.js')
 	script(src='https://www.google.com/recaptcha/api.js')
-	
+
 block CSS
 	link(rel='stylesheet', href='/css/in_game_kkutu_shop.css')
 	
 block Jungle
 	span#PUBLIC= PUBLIC ? "true" : undefined
+	// span#PORT= locals.PORT
 	span#URL= `${locals.PROTOCOL}://${locals.HOST}:${locals.PORT}/${locals._id}`
 	span#MOREMI_PART= locals.MOREMI_PART.join(',')
 	span#AVAIL_EQUIP= locals.AVAIL_EQUIP.join(',')
@@ -56,39 +57,41 @@ block Jungle
 	span#OPTIONS= JSON.stringify(locals.OPTIONS)
 	div#Yell
 	div#Loading= L('LOADING')
+	div#Balloons(style='position: absolute;')
 	-
 		LANG['explInjeong'] = `<h5>${L('explInjeong')}</h5>\
 			<h5 style='margin-top: 2px; border-top: 1px dashed #444444; padding-top: 2px; color: #BBBBBB;'>${L('explInjeongListTitle')}</h5>\
 			<h5>${locals.KO_INJEONG.map(function(item){ return L('theme_' + item); })}</h5>\
 			<h5 style='margin-top: 2px; border-top: 1px dashed #444444; padding-top: 2px; color: #BBBBBB;'>${L('explInjeongListTitle')} (${L('modeEKT')}, ${L('modeESH')})</h5>\
 			<h5>${locals.EN_INJEONG.map(function(item){ return L('theme_' + item); })}</h5>`;
-	
+
 block Middle
-	- var VERSION = L('version') + " (모바일)";
+	- var VERSION = L('version');
 	- var nick = SESSION.profile ? (SESSION.profile.title || SESSION.profile.name) : null;
 	div#Intro
-		img#intro(src='/img/kkutu/m_intro.png')
-		//- img#intro-start(src='/img/kkutu/intro_start.gif')
+		img#intro(src='/img/kkutu/intro.png')
+		// img#intro-start(src='/img/kkutu/intro_start.gif')
 		div#version= VERSION
 		div#intro-text= L('LOADING')
 	div.kkutu-menu
-		button#HelpBtn.for-lobby.for-master.for-normal.for-gaming(style='display: none; background-color: #BBBBBB;')!= L('help')
-		button#SettingBtn.for-lobby.for-master.for-normal.for-gaming(style='display: none; background-color: #CCCCCC;')!= L('settings')
-		button#CommunityBtn.for-lobby.for-master.for-normal.for-gaming(style='display: none; background-color: #DAA9FF;')!= L('community')
-		button#SpectateBtn.for-master.for-normal(style='display: none; background-color: #D19DFF;'): +FA('eye')
-		button#SetRoomBtn.for-master(style='display: none; background-color: #B0D2F3;'): +FA('magic')
-		button#NewRoomBtn.for-lobby(style='display: none; background-color: #8EC0F3;'): +FA('magic')
-		button#QuickRoomBtn.for-lobby(style='display: none; background-color: #B0D2F3;'): +FA('bolt')
-		//- button#ShopBtn.for-lobby(style='display: none; background-color: #B3E7B7;'): +FA('shopping-bag')
-		button#DictionaryBtn.for-lobby.for-master.for-normal.for-gaming(style='display: none; background-color: #73D07A;'): +FA('book')
-		//- button#WordPlusBtn.for-lobby.for-master.for-normal.for-gaming(style='display: none; background-color: #73D07A;')= L('wordPlus')
-		button#InviteBtn.for-master(style='display: none; background-color: #9FE669;'): +FA('envelope')
-		button#PracticeBtn.for-master.for-normal(style='display: none; background-color: #FCF5A9;'): +FA('plane')
-		button#ReadyBtn.for-normal(style='display: none; background-color: #FFC67F;'): +FA('play')
-		button#StartBtn.for-master(style='display: none; background-color: #FFB576;'): +FA('play-circle')
-		button#ExitBtn.for-master.for-normal.for-gaming(style='display: none; background-color: #FFADAD;'): +FA('times')
-		button#ReplayBtn.for-lobby(style='display: none; background-color: #D9FF82;'): +FA('video-camera')
-		button#LeaderboardBtn.for-lobby(style='display: none; background-color: #FFADD3;'): +FA('trophy')
+		button#HelpBtn.tiny-menu.for-lobby.for-master.for-normal.for-gaming(style='display: none; background-color: #BBBBBB;')!= L('help')
+		button#SettingBtn.tiny-menu.for-lobby.for-master.for-normal.for-gaming(style='display: none; background-color: #CCCCCC;')!= L('settings')
+		button#CommunityBtn.tiny-menu.for-lobby.for-master.for-normal.for-gaming(style='display: none; background-color: #DAA9FF;')!= L('community')
+		button#SpectateBtn.for-master.for-normal(style='display: none; background-color: #D19DFF;')= L('spectate')
+		button#SetRoomBtn.for-master(style='display: none; background-color: #B0D2F3;')= L('setRoom')
+		button#NewRoomBtn.for-lobby(style='display: none; background-color: #8EC0F3;')= L('newRoom')
+		button#QuickRoomBtn.for-lobby(style='display: none; background-color: #B0D2F3;')= L('quickRoom')
+		button#ShopBtn.for-lobby(style='display: none; background-color: #B3E7B7;')= L('shop')
+		button#DictionaryBtn.for-lobby.for-master.for-normal.for-gaming(style='display: none; background-color: #73D07A;')= L('dict')
+		// button#WordPlusBtn.for-lobby.for-master.for-normal.for-gaming(style='display: none; background-color: #73D07A;')= L('wordPlus')
+		button#InviteBtn.for-master(style='display: none; background-color: #9FE669;')= L('invite')
+		button#PracticeBtn.for-master.for-normal(style='display: none; background-color: #FCF5A9;')= L('practice')
+		button#ReadyBtn.for-normal(style='display: none; background-color: #FFC67F;')= L('ready')
+		button#StartBtn.for-master(style='display: none; background-color: #FFB576;')= L('start')
+		button#ExitBtn.for-master.for-normal.for-gaming(style='display: none; background-color: #FFADAD;')= L('exit')
+		button#ReplayBtn.for-lobby(style='display: none; background-color: #D9FF82;')= L('replay')
+		button#LeaderboardBtn.for-lobby(style='display: none; background-color: #FFADD3;')!= L('leaderboard')
+		div#facebook-menu.fb-like.for-lobby.for-master.for-normal.for-gaming(data-href='http://kkutu.kr', data-width='300', data-layout='button_count', data-action='like', data-show-faces='true', data-share='true')
 	+Dialog('SettingDiag', 300, 240, L('settingsText'))
 		div.dialog-bar
 			h4= L('mute')
@@ -160,8 +163,23 @@ block Middle
 		div.dialog-bar
 			h4= L('gameMode')
 			select#room-mode
-				- for(var i in locals.MODE)
-					option(value=Number(i))= L('mode' + locals.MODE[i])
+				optgroup(label=L('mcKorean'))
+					option(value=3)= L('modeKSH')
+					option(value=2)= L('modeKKT')
+					option(value=8)= L('modeKAP')
+					option(value=6)= L('modeKTY')
+					option(value=10)= L('modeKDA')
+					option(value=5)= L('modeKCW')
+					option(value=12)= L('modeKSS')
+					option(value=4)= L('modeCSQ')
+					option(value=9)= L('modeHUN')
+					option(value=14)= L('modeDRA')
+				optgroup(label=L('mcEnglish'))
+					option(value=1)= L('modeESH')
+					option(value=0)= L('modeEKT')
+					option(value=7)= L('modeETY')
+					option(value=11)= L('modeEDA')
+					option(value=13)= L('modeESS')
 		div.dialog-bar(style='margin-top: -5px; height: 50px;')
 			h4
 			h4#game-mode-expl.dialog-bar-value(style='width: 100%; font-size: 11px;')
@@ -228,7 +246,7 @@ block Middle
 				option(value=4) D
 		div.dialog-bar.tail-button
 			button#practice-ok= L('OK')
-	+Dialog('ResultDiag', 300, 420, L('gameResult'), true)
+	+Dialog('ResultDiag', 400, 420, L('gameResult'), true)
 		div.result-board
 		div.result-me
 			div.result-me-score
@@ -242,13 +260,13 @@ block Middle
 		div.dialog-bar.tail-button
 			button#result-ok= L('OK')
 			button#result-save= L('saveReplay')
-	+Dialog('DictionaryDiag', 300, 300, L('dict'))
+	+Dialog('DictionaryDiag', 400, 300, L('dict'))
 		div.dialog-bar
 			h4= L('wpHere')
-			input#dict-input(style='width: 183px;', placeholder=L('wpInput'), maxlength=200)
+			input#dict-input(style='width: 283px;', placeholder=L('wpInput'), maxlength=200)
 		div.dialog-bar#dict-output(style='height: 195px; overflow-y: scroll; color: #BBBBBB; background-color: #111111;')
 		div.dialog-bar.tail-button
-			select#dict-theme(style='width: 86px;')
+			select#dict-theme
 				option(value="")= L('pickInjeong')
 				- locals.KO_INJEONG.forEach(function(item){
 					option(value=item)= L('theme_' + item)
@@ -274,12 +292,12 @@ block Middle
 			div#ri-players(style='width: 100%;')
 		div.dialog-bar.tail-button
 			button#room-info-join= L('join')
-	+Dialog('ProfileDiag', 300, 360)
+	+Dialog('ProfileDiag', 300, 365)
 		div.dialog-bar.profile-head
 		div.dialog-bar
 			h4(style='width: 83px;')= L('place')
 			h4.dialog-bar-value#profile-place
-		div.dialog-bar.profile-record(style='padding: 2px 0px; border-top: 1px dashed #CCCCCC; margin: 2px 0px; height: 175px; overflow-y: scroll;')
+		div.dialog-bar.profile-record(style='padding: 2px 0px; border-top: 1px dashed #CCC; margin: 2px 0px; height: 175px; overflow-y: scroll;')
 			div.profile-record-field(style='font-weight: bold; text-align: center;')
 				div.profile-field-name= L('gameMode')
 				div.profile-field-record= L('record')
@@ -300,7 +318,7 @@ block Middle
 		div.dialog-bar.tail-button
 			button#kick-vote-no= L('disagree')
 			button#kick-vote-yes= L('agree')
-	+Dialog('PurchaseDiag', 300, 205, L('purchase'))
+	+Dialog('PurchaseDiag', 300, 310, L('purchase'))
 		div.dialog-bar
 			h4= L('pingBefore')
 			h4.dialog-bar-value.purchase-ping#purchase-ping-before
@@ -310,6 +328,9 @@ block Middle
 		div.dialog-bar
 			h4= L('pingAfter')
 			h4.dialog-bar-value.purchase-ping#purchase-ping-after
+		div.dialog-bar
+			h4= L('moremiAfter')
+			div.moremi#moremi-after(style='float: left; width: 100px; height: 100px;')
 		div.dialog-bar
 			h4#purchase-item-name(style='width: 100%; font-weight: bold;')
 		div.dialog-bar
@@ -322,12 +343,44 @@ block Middle
 		div.dialog-bar
 			h4= L('replayDate')
 			h4.dialog-bar-value#replay-date -
+			h4= L('VERSION')
+			h4.dialog-bar-value#replay-version -
 		div.dialog-bar
 			h4= L('replayPlayers')
 			h4.dialog-bar-value#replay-players -
 		div.dialog-bar.tail-button
 			button#replay-view= L('replayView')
-	+Dialog('ChatLogDiag', 300, 500, L('chatLog'))
+	+Dialog('DressDiag', 600, 280, L('dress'))
+		div.dialog-bar
+			h4(style='width: 150px;')= L('myExordial')
+			input#dress-exordial(type='textfield', placeholder=L('myExordialX'), style='width: 435px;', maxlength=100)
+		div.dialog-bar(style='width: 150px;')
+			div.moremi#dress-view(style='float: left; width: 150px; height: 150px;')
+			h4(style='width: 100%; font-weight: bold;')= L('myMoremi')
+		div.dialog-bar(style='padding: 5px; width: 440px;')
+			div(style='border-bottom: 1px solid #CCCCCC; height: 20px;')
+				- for(var i in locals.CATEGORIES)
+					- var v = locals.GROUPS[locals.CATEGORIES[i]] || [];
+					div.category-filter.dress-type(id="dress-type-" + locals.CATEGORIES[i], value=v.join(','))= L('category_' + locals.CATEGORIES[i])
+			div#dress-goods.goods-box
+		div.dialog-bar.tail-button
+			button#dress-ok= L('OK')
+			button#dress-cf= L('charFactory')
+			button(onclick=`alert("${L("paybackHelp")}");`)= L('payback')
+	+Dialog('CharFactoryDiag', 500, 410, L('charFactory'))
+		div.dialog-bar(style='width: 300px;')
+			div#cf-tray
+			div#cf-dict
+		div.dialog-bar(style='width: 200px;')
+			h4(style='border-bottom: 1px solid #CCCCCC; width: 100%; height: 24px;')= L('cfReward')
+			div#cf-reward
+		div.dialog-bar(style='width: 200px;')
+			div#cf-cost
+		div.dialog-bar
+			div#cf-goods.goods-box
+		div.dialog-bar.tail-button
+			button#cf-compose= L('cfCompose')
+	+Dialog('ChatLogDiag', 350, 500, L('chatLog'))
 		div#chat-log-board(style='height: 475px; font-size: 11px; overflow-y: scroll;')
 	+Dialog('ObtainDiag', 300, 200, L('notice'), true)
 		div.dialog-bar
@@ -336,14 +389,18 @@ block Middle
 		div.dialog-bar#obtain-name(style='text-align: center;')
 		div.dialog-bar.tail-button
 			button#obtain-ok= L('OK')
-	+Dialog('HelpDiag', 300, 400, L('helpText'))
-		iframe#help-board(width=300, height=375)
+	+Dialog('HelpDiag', 550, 400, L('helpText'))
+		iframe#help-board(width=550, height=375)
 	+Product('UserList')
 		div 불러오는 중
 	+Product('RoomList')
 		div 불러오는 중
 	+Product('Shop')
-		div 불러오는 중
+		div.shop-categories
+			- for(var i in locals.CATEGORIES)
+				- var v = locals.GROUPS[locals.CATEGORIES[i]] || [];
+				div.category-filter.shop-type(id="shop-type-" + locals.CATEGORIES[i], value=v.join(','))= L('category_' + locals.CATEGORIES[i])
+		div#shop-shelf(style='width: 100%; height: 305px; overflow-y: scroll;')
 	+Product('Room')
 		div.team-selector
 			div.team-button#team-0.team-0= L('teamSolo')
@@ -354,36 +411,83 @@ block Middle
 		div.room-users
 	+Product('Game')
 		div.game-head
-			div.b-left.bb(style='display: none;')
+			div.items
+			div.hints(style='display: none;')
 			div.b-left.cwcmd(style='display: none;')
 				div.cw-q-head
 				input#cw-q-input(placeholder=L('inputHere'), style='width: 313px; height: 20px; font-size: 15px;')
 				div.cw-q-body
+			div.b-left.bb(style='display: none;')
 			div.jjoriping
 				img.jjoObj.jjoEyeL(src='/img/jjoeyeL.png')
 				img.jjoObj.jjoNose(src='/img/jjonose.png')
 				img.jjoObj.jjoEyeR(src='/img/jjoeyeR.png')
 				div.jjoDisplayBar
-					div.jjo-display
+					div.jjo-display.ellipse
 					+GraphBar('jjo-turn-time')
 					+GraphBar('jjo-round-time')
-			div.items
-			div.hints(style='display: none;')
 			div.chain
 			div.rounds
 			div.history-holder
 				div.history
 		div.game-body
 		div.game-input
-			input#game-input(placeholder=L('yourTurn')+' '+L('inputHere'))
+			input#game-input(placeholder=L('yourTurn')+' '+L('inputChat'), readonly)
+	+Product('Me')
+		div.moremi.my-image
+		div.my-stat
+			div.jt-image.my-stat-level
+			div.my-stat-name.ellipse
+			div.my-stat-record
+			div.my-stat-ping
+			div
+				+GraphBar('my-okg')
+				div.bar-text.my-okg-text
+				+Expl(true)
+					div(style='color: #CCCCCC;')!= L('okgExpl')
+		div.my-level
+		+GraphBar('my-gauge')
+		div.bar-text.my-gauge-text
 	+Product('Chat')
 		div#Chat
 		input#Talk(maxlength=200)
 		button#ChatBtn= L('send')
-	div#ad
+	+Product('AD')
+
 
 block Bottom
-	div#facebook-menu
-		div.fb-like(data-href='http://jjo.kr/kkutu', data-width='300', data-layout='button_count', data-action='like', data-show-faces='true', data-share='true')
 	div.bottom-legal!= L('dictionarySupport')
+	block Bottom
+	script.
+		function setParam(name, value) {
+		var l = window.location;
+		/* build params */
+		var params = {};
+		var x = /(?:\\??)([^=&?]+)=?([^&?]*)/g;
+		var s = l.search;
+		for(var r = x.exec(s); r; r = x.exec(s))
+		{
+		r[1] = decodeURIComponent(r[1]);
+		if (!r[2]) r[2] = '%%';
+		params[r[1]] = r[2];
+		}
+		/* set param */
+		params[name] = encodeURIComponent(value);
+		/* build search */
+		var search = [];
+		for(var i in params)
+		{
+		var p = encodeURIComponent(i);
+		var v = params[i];
+		if (v != '%%') p += '=' + v;
+		search.push(p);
+		}
+		search = search.join('&');
+		/* execute search */
+		l.search = search;
+		}
+	div.bottom-legal!="언어를 선택하세요 Please choose the language."
+	a(href="javascript:setParam('locale', 'ko_KR');") 한국어 Korean
+	br
+	a(href="javascript:setParam('locale', 'en_US');") 영어 English
 	div.bottom-legal!= L('etcSupport')

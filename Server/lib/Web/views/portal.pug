@@ -29,8 +29,8 @@ block Middle
 			h3#holder= L('title').replace(/\[.+?\]/g, "")
 			img#logo(src='/img/kkutu/short_logo.png')
 		div#menu-bar(style='float: right; margin-top: 25px;')
-			a(target='_blank', href='//cafe.naver.com/sdbx', style='background-color: #63A95B;')= L('sandbox')
-			a(target='_blank', href='//blog.jjo.kr/', style='background-color: #4078DC;')= L('CREATOR')
+			a(target='_blank', href='//www.otucommunity.kr', style='background-color: #63A95B;')= L('sandbox')
+			a(target='_blank', href='//discord.gg/WK4CJsy', style='background-color: #4078DC;')= L('CREATOR')
 		div.jjoriping(style='margin-top: 40px;')
 			img.jjoObj.jjoEyeL(src='/img/jjoeyeL.png', style='left: -270px;')
 			img.jjoObj.jjoNose(src='/img/jjonose.png', style='left: -170px;')
@@ -46,10 +46,60 @@ block Middle
 				label= L('serverList')
 				label#server-total(style='color: #AAA; font-size: 13px;')
 			div#server-list
-	div(style='float: left; width: calc(100% - 4px); border: 2px solid #CCC; margin-top: 10px; background-color: #EEE;')
-		iframe#kkutu-bulletin(width='100%', height='400px', src='/kkutu_bulletin.html')
-	+separator(10)
 
-block Bottom
+	div(style='float: right; width: calc(50% - 78px);')
+		div(style='float: right; width: 136% ; background-color: #00D8FF; color: black;')
+			font(size=2, style='color: white;') &nbsp;오투 업데이트 내역
+		br
+		div(style='float: right; width: 136%; background-color: #FFFFFF;')
+			iframe#kkutu-bulletin(width='100%', height='400.5px', src='/notice.html')
+	div(style='float: left; width: calc(50% - 80px); margin-left: 5px;')
+		div(style='float: right; width: 100% ; background-color: #00D8FF; color: black;')
+			font(size=2, style='color: white;') &nbsp;오투 이벤트
+		br
+		div(style='float: right; width: 100%; background-color: #FFFFFF;')
+			iframe#kkutu-bulletin(width='100%', height='250px', src='/event.html')
+	div(style='float: left; width: calc(50% - 80px); margin-left: 5px;')
+		div(style='float: right; width: 100% ; background-color: #00D8FF; color: black;')
+			font(size=2, style='color: white;') &nbsp;오투 공지사항
+		br
+		div(style='float: right; width: 100%; background-color: #FFFFFF;')
+			iframe#kkutu-bulletin(width='100%', height='121.5px', src='/kkt_notice.html')
+	+separator(10)
+	+Product('AD')
+
+block Bottom	
 	div.bottom-legal!= L('dictionarySupport')
-	div.bottom-legal!= L('etcSupport')
+	block Bottom
+	script.
+		function setParam(name, value) {
+		var l = window.location;
+		/* build params */
+		var params = {};
+		var x = /(?:\\??)([^=&?]+)=?([^&?]*)/g;
+		var s = l.search;
+		for(var r = x.exec(s); r; r = x.exec(s))
+		{
+		r[1] = decodeURIComponent(r[1]);
+		if (!r[2]) r[2] = '%%';
+		params[r[1]] = r[2];
+		}
+		/* set param */
+		params[name] = encodeURIComponent(value);
+		/* build search */
+		var search = [];
+		for(var i in params)
+		{
+		var p = encodeURIComponent(i);
+		var v = params[i];
+		if (v != '%%') p += '=' + v;
+		search.push(p);
+		}
+		search = search.join('&');
+		/* execute search */
+		l.search = search;
+		}
+	div.bottom-legal!="언어를 선택하세요 Please choose the language."
+	a(href="javascript:setParam('locale', 'ko_KR');") 한국어 Korean
+	br
+	a(href="javascript:setParam('locale', 'en_US');") 영어 English
